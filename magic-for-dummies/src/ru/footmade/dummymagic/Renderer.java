@@ -1,0 +1,168 @@
+package ru.footmade.dummymagic;
+
+import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.graphics.Color;
+import com.badlogic.gdx.graphics.GL10;
+import com.badlogic.gdx.graphics.OrthographicCamera;
+import com.badlogic.gdx.graphics.Texture.TextureFilter;
+import com.badlogic.gdx.graphics.g2d.BitmapFont;
+import com.badlogic.gdx.graphics.g2d.NinePatch;
+import com.badlogic.gdx.graphics.g2d.TextureAtlas;
+import com.badlogic.gdx.graphics.g2d.TextureAtlas.AtlasRegion;
+import com.badlogic.gdx.graphics.g2d.freetype.FreeTypeFontGenerator;
+import com.badlogic.gdx.graphics.g2d.freetype.FreeTypeFontGenerator.FreeTypeFontParameter;
+import com.badlogic.gdx.scenes.scene2d.InputEvent;
+import com.badlogic.gdx.scenes.scene2d.Stage;
+import com.badlogic.gdx.scenes.scene2d.ui.Container;
+import com.badlogic.gdx.scenes.scene2d.ui.Image;
+import com.badlogic.gdx.scenes.scene2d.ui.Label;
+import com.badlogic.gdx.scenes.scene2d.ui.Label.LabelStyle;
+import com.badlogic.gdx.scenes.scene2d.ui.Table;
+import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
+import com.badlogic.gdx.scenes.scene2d.ui.TextButton.TextButtonStyle;
+import com.badlogic.gdx.scenes.scene2d.utils.Align;
+import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
+import com.badlogic.gdx.scenes.scene2d.utils.Drawable;
+import com.badlogic.gdx.scenes.scene2d.utils.NinePatchDrawable;
+import com.badlogic.gdx.scenes.scene2d.utils.TextureRegionDrawable;
+import com.badlogic.gdx.utils.Disposable;
+import com.badlogic.gdx.utils.Scaling;
+
+public class Renderer implements Disposable {
+	private static final float SCREEN_HEIGHT = 1000;
+	private static final float FRAME_HEIGHT = 340;
+	private static final float FRAME_PADDING = 30;
+	private static final int FONT_HEIGHT = 60;
+	private static final float CHOICE_WIDTH = 0.7f;
+	
+	private static final String RUSSIAN_CHARS = "àáâãäå¸æçèéêëìíîïðñòóôõö÷øùúûüýþÿÀÁÂÃÄÅ¨ÆÇÈÉÊËÌÍÎÏÐÑÒÓÔÕÖ×ØÙÚÛÜÝÞß";
+	
+	private Script script;
+
+	private float scrW, scrH;
+	
+	private OrthographicCamera camera;
+	private TextureAtlas atlas;
+	private BitmapFont font;
+	
+	public Stage stage;
+	private TextureRegionDrawable background;
+	public Container textFrame;
+	public Label text;
+	public Table choicesList;
+	private TextButtonStyle choiceStyle;
+	
+	public Renderer(Script script) {
+		this.script = script;
+		
+		scrH = SCREEN_HEIGHT;
+		scrW = Gdx.graphics.getWidth() * scrH / Gdx.graphics.getHeight();
+		
+		camera = new OrthographicCamera(scrW, scrH);
+		camera.translate(scrW / 2, scrH / 2);
+		camera.update();
+		
+		atlas = new TextureAtlas(Gdx.files.internal("img/pack.atlas"));
+		
+		FreeTypeFontGenerator generator = new FreeTypeFontGenerator(Gdx.files.internal("fnt/mtcorsva.ttf"));
+		FreeTypeFontParameter fontParam = new FreeTypeFontParameter();
+		fontParam.size = FONT_HEIGHT;
+		fontParam.minFilter = TextureFilter.Linear;
+		fontParam.magFilter = TextureFilter.Linear;
+		fontParam.characters = fontParam.characters + RUSSIAN_CHARS;
+		font = generator.generateFont(fontParam);
+		generator.dispose();
+		
+		stage = new Stage(scrW, scrH);
+		
+		background = new TextureRegionDrawable();
+		Image backgroundImage = new Image(background, Scaling.fill);
+		backgroundImage.setPosition(0, 0);
+		backgroundImage.setSize(scrW, scrH);
+		stage.addActor(backgroundImage);
+		
+		text = new Label("", new LabelStyle(font, Color.WHITE));
+		text.setAlignment(Align.left | Align.top);
+		
+		textFrame = new Container(text);
+		textFrame.fill();
+		NinePatch frame = atlas.createPatch("gui/frame");
+		frame.getTexture().setFilter(TextureFilter.Linear, TextureFilter.Linear);
+		textFrame.setBackground(new NinePatchDrawable(frame));
+		textFrame.setPosition(FRAME_PADDING, FRAME_PADDING);
+		textFrame.setSize(scrW - FRAME_PADDING * 2, FRAME_HEIGHT);
+		stage.addActor(textFrame);
+		
+		Drawable listItem = new NinePatchDrawable(atlas.createPatch("gui/list_item"));
+		Drawable listItemPressed = new NinePatchDrawable(atlas.createPatch("gui/list_item_pressed"));
+		choiceStyle = new TextButtonStyle(listItem, listItemPressed, listItemPressed, font);
+		choiceStyle.fontColor = Color.BLUE;
+		choiceStyle.downFontColor = Color.WHITE;
+		
+		choicesList = new Table();
+		choicesList.setVisible(false);
+		stage.addActor(choicesList);
+	}
+	
+	private String backgroundOldName;
+	
+	private void refreshBackground() {
+		if (backgroundOldName != script.getCurrentBackground()) {
+			AtlasRegion region = atlas.findRegion("bg/" + script.getCurrentBackground());
+			region.getTexture().setFilter(TextureFilter.Linear, TextureFilter.Linear);
+			background.setRegion(region);
+		}
+	}
+	
+	private void refreshText() {
+		textFrame.setVisible(script.getCurrentText().length() > 0);
+		text.setText(script.getTextToDraw());
+	}
+	
+	private void refreshChoices() {
+		if (script.currentScene != oldScene) {
+			java.util.List<Script.Button> buttons = script.getCurrentButtons();
+			choicesList.setVisible(buttons.size() > 0);
+			if (buttons.size() > 0) {
+				choicesList.clearChildren();
+				for (int i = 0; i < buttons.size(); i++) {
+					TextButton button = new TextButton(buttons.get(i).text, choiceStyle);
+					final int buttonIndex = i;
+					button.addListener(new ClickListener() {
+						@Override
+						public void clicked(InputEvent event, float x, float y) {
+							script.choose(buttonIndex);
+						}
+					});
+					choicesList.add(button).size(scrW * CHOICE_WIDTH, button.getHeight());
+					choicesList.row();
+				}
+				choicesList.setSize(scrW, choicesList.getPrefHeight());
+				choicesList.setPosition(0, (scrH - choicesList.getHeight()) / 2);
+			}
+		}
+	}
+	
+	private int oldScene;
+	
+	public void render() {		
+		refreshBackground();
+		refreshText();
+		refreshChoices();
+		
+		Gdx.gl.glClearColor(1, 1, 1, 1);
+		Gdx.gl.glClear(GL10.GL_COLOR_BUFFER_BIT);
+		
+		stage.act(Gdx.graphics.getDeltaTime());
+        stage.draw();
+        
+        oldScene = script.currentScene;
+	}
+
+	@Override
+	public void dispose() {
+		atlas.dispose();
+		font.dispose();
+		stage.dispose();
+	}
+}

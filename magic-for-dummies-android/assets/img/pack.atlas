@@ -1,0 +1,557 @@
+
+pack.png
+format: RGBA8888
+filter: Nearest,Nearest
+repeat: none
+bg/black
+  rotate: false
+  xy: 2, 2
+  size: 1280, 768
+  orig: 1280, 768
+  offset: 0, 0
+  index: -1
+
+pack2.png
+format: RGBA8888
+filter: Nearest,Nearest
+repeat: none
+bg/forest
+  rotate: false
+  xy: 2, 2
+  size: 1280, 768
+  orig: 1280, 768
+  offset: 0, 0
+  index: -1
+
+pack3.png
+format: RGBA8888
+filter: Nearest,Nearest
+repeat: none
+bg/gens
+  rotate: false
+  xy: 2, 2
+  size: 1280, 768
+  orig: 1280, 768
+  offset: 0, 0
+  index: -1
+
+pack4.png
+format: RGBA8888
+filter: Nearest,Nearest
+repeat: none
+bg/hand
+  rotate: false
+  xy: 2, 2
+  size: 1280, 768
+  orig: 1280, 768
+  offset: 0, 0
+  index: -1
+
+pack5.png
+format: RGBA8888
+filter: Nearest,Nearest
+repeat: none
+bg/kipsroom
+  rotate: false
+  xy: 2, 2
+  size: 1280, 768
+  orig: 1280, 768
+  offset: 0, 0
+  index: -1
+
+pack6.png
+format: RGBA8888
+filter: Nearest,Nearest
+repeat: none
+bg/library
+  rotate: false
+  xy: 2, 2
+  size: 1280, 768
+  orig: 1280, 768
+  offset: 0, 0
+  index: -1
+
+pack7.png
+format: RGBA8888
+filter: Nearest,Nearest
+repeat: none
+bg/magicroom
+  rotate: false
+  xy: 2, 2
+  size: 1280, 768
+  orig: 1280, 768
+  offset: 0, 0
+  index: -1
+
+pack8.png
+format: RGBA8888
+filter: Nearest,Nearest
+repeat: none
+bg/numer
+  rotate: false
+  xy: 2, 2
+  size: 1280, 768
+  orig: 1280, 768
+  offset: 0, 0
+  index: -1
+
+pack9.png
+format: RGBA8888
+filter: Nearest,Nearest
+repeat: none
+bg/office
+  rotate: false
+  xy: 2, 2
+  size: 1280, 768
+  orig: 1280, 768
+  offset: 0, 0
+  index: -1
+
+pack10.png
+format: RGBA8888
+filter: Nearest,Nearest
+repeat: none
+bg/pab
+  rotate: false
+  xy: 2, 2
+  size: 1280, 768
+  orig: 1280, 768
+  offset: 0, 0
+  index: -1
+
+pack11.png
+format: RGBA8888
+filter: Nearest,Nearest
+repeat: none
+bg/park
+  rotate: false
+  xy: 2, 2
+  size: 1280, 768
+  orig: 1280, 768
+  offset: 0, 0
+  index: -1
+
+pack12.png
+format: RGBA8888
+filter: Nearest,Nearest
+repeat: none
+bg/portal
+  rotate: false
+  xy: 2, 2
+  size: 1280, 768
+  orig: 1280, 768
+  offset: 0, 0
+  index: -1
+
+pack13.png
+format: RGBA8888
+filter: Nearest,Nearest
+repeat: none
+bg/shooter
+  rotate: false
+  xy: 2, 2
+  size: 1280, 768
+  orig: 1280, 768
+  offset: 0, 0
+  index: -1
+
+pack14.png
+format: RGBA8888
+filter: Nearest,Nearest
+repeat: none
+bg/street
+  rotate: false
+  xy: 2, 2
+  size: 1280, 768
+  orig: 1280, 768
+  offset: 0, 0
+  index: -1
+
+pack15.png
+format: RGBA8888
+filter: Nearest,Nearest
+repeat: none
+bg/tavern
+  rotate: false
+  xy: 2, 2
+  size: 1280, 768
+  orig: 1280, 768
+  offset: 0, 0
+  index: -1
+
+pack16.png
+format: RGBA8888
+filter: Nearest,Nearest
+repeat: none
+bg/tower
+  rotate: false
+  xy: 2, 2
+  size: 1280, 768
+  orig: 1280, 768
+  offset: 0, 0
+  index: -1
+
+pack17.png
+format: RGBA8888
+filter: Nearest,Nearest
+repeat: none
+bg/town
+  rotate: false
+  xy: 2, 2
+  size: 1280, 768
+  orig: 1280, 768
+  offset: 0, 0
+  index: -1
+
+pack18.png
+format: RGBA8888
+filter: Nearest,Nearest
+repeat: none
+gui/alert
+  rotate: false
+  xy: 2, 56
+  size: 350, 250
+  orig: 350, 250
+  offset: 0, 0
+  index: -1
+gui/btn_back
+  rotate: false
+  xy: 610, 206
+  size: 100, 100
+  orig: 100, 100
+  offset: 0, 0
+  index: -1
+gui/btn_back_g
+  rotate: false
+  xy: 610, 104
+  size: 100, 100
+  orig: 100, 100
+  offset: 0, 0
+  index: -1
+gui/btn_gallery
+  rotate: false
+  xy: 712, 206
+  size: 100, 100
+  orig: 100, 100
+  offset: 0, 0
+  index: -1
+gui/btn_gallery_g
+  rotate: false
+  xy: 712, 104
+  size: 100, 100
+  orig: 100, 100
+  offset: 0, 0
+  index: -1
+gui/btn_hide
+  rotate: false
+  xy: 814, 206
+  size: 100, 100
+  orig: 100, 100
+  offset: 0, 0
+  index: -1
+gui/btn_hide_g
+  rotate: false
+  xy: 814, 104
+  size: 100, 100
+  orig: 100, 100
+  offset: 0, 0
+  index: -1
+gui/btn_info
+  rotate: false
+  xy: 916, 206
+  size: 100, 100
+  orig: 100, 100
+  offset: 0, 0
+  index: -1
+gui/btn_info_g
+  rotate: false
+  xy: 916, 104
+  size: 100, 100
+  orig: 100, 100
+  offset: 0, 0
+  index: -1
+gui/btn_load
+  rotate: false
+  xy: 1018, 206
+  size: 100, 100
+  orig: 100, 100
+  offset: 0, 0
+  index: -1
+gui/btn_load_g
+  rotate: false
+  xy: 1018, 104
+  size: 100, 100
+  orig: 100, 100
+  offset: 0, 0
+  index: -1
+gui/btn_menu
+  rotate: false
+  xy: 1120, 206
+  size: 100, 100
+  orig: 100, 100
+  offset: 0, 0
+  index: -1
+gui/btn_menu_g
+  rotate: false
+  xy: 1120, 104
+  size: 100, 100
+  orig: 100, 100
+  offset: 0, 0
+  index: -1
+gui/btn_music
+  rotate: false
+  xy: 1222, 206
+  size: 100, 100
+  orig: 100, 100
+  offset: 0, 0
+  index: -1
+gui/btn_music_g
+  rotate: false
+  xy: 1222, 104
+  size: 100, 100
+  orig: 100, 100
+  offset: 0, 0
+  index: -1
+gui/btn_no
+  rotate: false
+  xy: 1324, 206
+  size: 100, 100
+  orig: 100, 100
+  offset: 0, 0
+  index: -1
+gui/btn_no_g
+  rotate: false
+  xy: 1324, 104
+  size: 100, 100
+  orig: 100, 100
+  offset: 0, 0
+  index: -1
+gui/btn_play
+  rotate: false
+  xy: 1426, 206
+  size: 100, 100
+  orig: 100, 100
+  offset: 0, 0
+  index: -1
+gui/btn_play_g
+  rotate: false
+  xy: 1426, 104
+  size: 100, 100
+  orig: 100, 100
+  offset: 0, 0
+  index: -1
+gui/btn_save
+  rotate: false
+  xy: 1528, 206
+  size: 100, 100
+  orig: 100, 100
+  offset: 0, 0
+  index: -1
+gui/btn_save_g
+  rotate: false
+  xy: 1528, 104
+  size: 100, 100
+  orig: 100, 100
+  offset: 0, 0
+  index: -1
+gui/btn_skip
+  rotate: false
+  xy: 610, 2
+  size: 100, 100
+  orig: 100, 100
+  offset: 0, 0
+  index: -1
+gui/btn_skip_g
+  rotate: false
+  xy: 712, 2
+  size: 100, 100
+  orig: 100, 100
+  offset: 0, 0
+  index: -1
+gui/btn_tools
+  rotate: false
+  xy: 814, 2
+  size: 100, 100
+  orig: 100, 100
+  offset: 0, 0
+  index: -1
+gui/btn_tools_g
+  rotate: false
+  xy: 916, 2
+  size: 100, 100
+  orig: 100, 100
+  offset: 0, 0
+  index: -1
+gui/btn_undo
+  rotate: false
+  xy: 1018, 2
+  size: 100, 100
+  orig: 100, 100
+  offset: 0, 0
+  index: -1
+gui/btn_undo_g
+  rotate: false
+  xy: 1120, 2
+  size: 100, 100
+  orig: 100, 100
+  offset: 0, 0
+  index: -1
+gui/btn_yes
+  rotate: false
+  xy: 1222, 2
+  size: 100, 100
+  orig: 100, 100
+  offset: 0, 0
+  index: -1
+gui/btn_yes_g
+  rotate: false
+  xy: 1324, 2
+  size: 100, 100
+  orig: 100, 100
+  offset: 0, 0
+  index: -1
+gui/frame
+  rotate: false
+  xy: 354, 52
+  size: 254, 254
+  split: 99, 99, 99, 99
+  pad: 50, 46, 28, 29
+  orig: 254, 254
+  offset: 0, 0
+  index: -1
+gui/list_item
+  rotate: false
+  xy: 1426, 4
+  size: 98, 98
+  split: 20, 19, 23, 21
+  pad: 20, 19, 23, 22
+  orig: 98, 98
+  offset: 0, 0
+  index: -1
+gui/list_item_pressed
+  rotate: false
+  xy: 1526, 4
+  size: 98, 98
+  split: 20, 19, 23, 21
+  pad: 20, 19, 23, 22
+  orig: 98, 98
+  offset: 0, 0
+  index: -1
+
+pack19.png
+format: RGBA8888
+filter: Nearest,Nearest
+repeat: none
+pers/book
+  rotate: false
+  xy: 2, 2
+  size: 480, 768
+  orig: 480, 768
+  offset: 0, 0
+  index: -1
+pers/furi_left
+  rotate: false
+  xy: 484, 2
+  size: 480, 768
+  orig: 480, 768
+  offset: 0, 0
+  index: -1
+pers/furi_right
+  rotate: false
+  xy: 966, 2
+  size: 480, 768
+  orig: 480, 768
+  offset: 0, 0
+  index: -1
+pers/gop1
+  rotate: false
+  xy: 1448, 2
+  size: 480, 768
+  orig: 480, 768
+  offset: 0, 0
+  index: -1
+
+pack20.png
+format: RGBA8888
+filter: Nearest,Nearest
+repeat: none
+pers/gop2
+  rotate: false
+  xy: 2, 2
+  size: 480, 768
+  orig: 480, 768
+  offset: 0, 0
+  index: -1
+pers/gop3
+  rotate: false
+  xy: 484, 2
+  size: 480, 768
+  orig: 480, 768
+  offset: 0, 0
+  index: -1
+pers/kip_ok
+  rotate: false
+  xy: 966, 2
+  size: 480, 768
+  orig: 480, 768
+  offset: 0, 0
+  index: -1
+pers/kipmag_ok
+  rotate: false
+  xy: 1448, 2
+  size: 480, 768
+  orig: 480, 768
+  offset: 0, 0
+  index: -1
+
+pack21.png
+format: RGBA8888
+filter: Nearest,Nearest
+repeat: none
+pers/kip_yoshi
+  rotate: false
+  xy: 2, 2
+  size: 700, 768
+  orig: 700, 768
+  offset: 0, 0
+  index: -1
+pers/sky_naked
+  rotate: false
+  xy: 704, 2
+  size: 480, 768
+  orig: 480, 768
+  offset: 0, 0
+  index: -1
+pers/sky_ok
+  rotate: false
+  xy: 1186, 2
+  size: 480, 768
+  orig: 480, 768
+  offset: 0, 0
+  index: -1
+
+pack22.png
+format: RGBA8888
+filter: Nearest,Nearest
+repeat: none
+pers/sky_oo
+  rotate: false
+  xy: 2, 2
+  size: 480, 768
+  orig: 480, 768
+  offset: 0, 0
+  index: -1
+pers/sveta_ok
+  rotate: false
+  xy: 484, 2
+  size: 480, 768
+  orig: 480, 768
+  offset: 0, 0
+  index: -1
+pers/zoy_ok
+  rotate: false
+  xy: 966, 2
+  size: 480, 768
+  orig: 480, 768
+  offset: 0, 0
+  index: -1
