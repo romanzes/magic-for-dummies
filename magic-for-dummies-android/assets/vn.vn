@@ -81,7 +81,7 @@ _bg(kipsroom)
 Вот Игры тестить - это да!
 
 _bg(office)
-_unit(zoy_ok, dissolve)
+_unit(zoy_ok, dissolve, left)
 Однажды к Зою забежал -
 Один старинный мой приятель.
 Он, помню, мидлеты писал,

@@ -83,7 +83,7 @@ public class Script {
 		for (UnitAction action : unitActions) {
 			switch (action.type) {
 			case UnitAction.ACTION_SHOW:
-				units.add(new Unit(action.unitName));
+				units.add(new Unit(action.unitName, action.place));
 				break;
 			case UnitAction.ACTION_HIDE:
 				for (Unit unit : units) {
@@ -146,10 +146,18 @@ public class Script {
 				jumpLabel = commandData[1];
 			} else if (commandName.equals("unit")) {
 				String unitName = commandData[1];
-				unitActions.add(new UnitAction(unitName, UnitAction.ACTION_SHOW));
+				int place = Unit.PLACE_CENTER;
+				if (commandData.length > 3) {
+					String placeName = commandData[3];
+					if ("left".equals(placeName))
+						place = Unit.PLACE_LEFT;
+					else if ("right".equals(placeName))
+						place = Unit.PLACE_RIGHT;
+				}
+				unitActions.add(new UnitAction(unitName, UnitAction.ACTION_SHOW, place));
 			} else if (commandName.equals("hide")) {
 				String unitName = commandData[1];
-				unitActions.add(new UnitAction(unitName, UnitAction.ACTION_HIDE));
+				unitActions.add(new UnitAction(unitName, UnitAction.ACTION_HIDE, Unit.PLACE_ANY));
 			}
 		}
 	}
@@ -181,10 +189,21 @@ public class Script {
 	}
 	
 	public class Unit {
+		public static final int PLACE_ANY = 0;
+		public static final int PLACE_LEFT = 1;
+		public static final int PLACE_CENTER = 2;
+		public static final int PLACE_RIGHT = 3;
+		
 		public String name;
+		public int place;
 		
 		public Unit(String name) {
+			this(name, PLACE_CENTER);
+		}
+		
+		public Unit(String name, int place) {
 			this.name = name;
+			this.place = place;
 		}
 	}
 	
@@ -193,15 +212,13 @@ public class Script {
 		public static final int ACTION_HIDE = 1;
 		
 		public int type;
+		public int place;
 		public String unitName;
 		
-		public UnitAction(String unitName) {
-			this(unitName, ACTION_SHOW);
-		}
-		
-		public UnitAction(String unitName, int type) {
+		public UnitAction(String unitName, int type, int place) {
 			this.unitName = unitName;
 			this.type = type;
+			this.place = place;
 		}
 	}
 }

@@ -33,9 +33,25 @@ public class UnitsView extends Actor {
 				region.getTexture().setFilter(TextureFilter.Linear, TextureFilter.Linear);
 				unitSprite = new Sprite(region);
 				unitSprite.setSize(unitSprite.getWidth() * getHeight() / unitSprite.getHeight(), getHeight());
-				unitSprite.setPosition((getWidth() - unitSprite.getWidth()) / 2, 0);
 				unitCache.put(unit.name, unitSprite);
 			}
+			float x;
+			switch (unit.place) {
+			case Unit.PLACE_LEFT:
+				x = getWidth() / 6;
+				break;
+			case Unit.PLACE_RIGHT:
+				x = getWidth() * 5 / 6;
+				break;
+			case Unit.PLACE_CENTER:
+			default:
+				x = getWidth() / 2;
+				break;
+			}
+			x -= unitSprite.getWidth() / 2;
+			if (x < 0) x = 0;
+			if (x > getWidth() - unitSprite.getWidth()) x = getWidth() - unitSprite.getWidth();
+			unitSprite.setPosition(x, 0);
 			unitSprite.draw(batch, parentAlpha);
 		}
 	}
