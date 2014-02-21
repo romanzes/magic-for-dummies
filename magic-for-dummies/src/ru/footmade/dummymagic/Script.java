@@ -17,6 +17,8 @@ public class Script {
 	private long tick;
 	private boolean textRendered;
 	
+	public List<Unit> units = new ArrayList<Unit>();
+	
 	public Script() {
 		String rawScript = Gdx.files.internal("vn.vn").readString("UTF-8");
 		String[] rawScenes = rawScript.split("((\\r\\n?)|(\\n\\r?))\\1");
@@ -73,6 +75,26 @@ public class Script {
 		currentScene = index;
 		tick = System.currentTimeMillis();
 		textRendered = false;
+		updateUnits();
+	}
+	
+	private void updateUnits() {
+		List<UnitAction> unitActions = scenes[currentScene].unitActions;
+		for (UnitAction action : unitActions) {
+			switch (action.type) {
+			case UnitAction.ACTION_SHOW:
+				units.add(new Unit(action.unitName));
+				break;
+			case UnitAction.ACTION_HIDE:
+				for (Unit unit : units) {
+					if (unit.name.equals(action.unitName)) {
+						units.remove(unit);
+						break;
+					}
+				}
+				break;
+			}
+		}
 	}
 	
 	public String getTextToDraw() {
@@ -93,6 +115,7 @@ public class Script {
 		private String text;
 		private String background;
 		private List<Button> buttons = new ArrayList<Button>();
+		private List<UnitAction> unitActions = new ArrayList<UnitAction>();
 		private String label, jumpLabel;
 		
 		public Scene(String raw) {
@@ -121,6 +144,12 @@ public class Script {
 				label = commandData[1];
 			} else if (commandName.equals("jump")) {
 				jumpLabel = commandData[1];
+			} else if (commandName.equals("unit")) {
+				String unitName = commandData[1];
+				unitActions.add(new UnitAction(unitName, UnitAction.ACTION_SHOW));
+			} else if (commandName.equals("hide")) {
+				String unitName = commandData[1];
+				unitActions.add(new UnitAction(unitName, UnitAction.ACTION_HIDE));
 			}
 		}
 	}
@@ -148,6 +177,31 @@ public class Script {
 		public Button(String text, String label) {
 			this.text = text;
 			this.label = label;
+		}
+	}
+	
+	public class Unit {
+		public String name;
+		
+		public Unit(String name) {
+			this.name = name;
+		}
+	}
+	
+	public class UnitAction {
+		public static final int ACTION_SHOW = 0;
+		public static final int ACTION_HIDE = 1;
+		
+		public int type;
+		public String unitName;
+		
+		public UnitAction(String unitName) {
+			this(unitName, ACTION_SHOW);
+		}
+		
+		public UnitAction(String unitName, int type) {
+			this.unitName = unitName;
+			this.type = type;
 		}
 	}
 }

@@ -51,6 +51,7 @@ public class Renderer implements Disposable {
 	public Label text;
 	public Table choicesList;
 	private TextButtonStyle choiceStyle;
+	private UnitsView unitsView;
 	
 	public Renderer(Script script) {
 		this.script = script;
@@ -80,6 +81,10 @@ public class Renderer implements Disposable {
 		backgroundImage.setPosition(0, 0);
 		backgroundImage.setSize(scrW, scrH);
 		stage.addActor(backgroundImage);
+		
+		unitsView = new UnitsView(atlas, script.units);
+		unitsView.setSize(scrW, scrH);
+		stage.addActor(unitsView);
 		
 		text = new Label("", new LabelStyle(font, Color.WHITE));
 		text.setAlignment(Align.left | Align.top);
