@@ -4,7 +4,7 @@ _bg(black)
 Ведь сон - лишь отдых для кого-то,
 А я во сне живу в игрушках.
 
-_unit(kip_ok, center, show)
+_unit(kip_ok, center, show with dissolve)
 Нет, не в игрушках даже - в Играх!
 В таких серьезных, с большой буквы.
 Реальность - только лишь эпиграф
@@ -17,6 +17,8 @@ _unit(sveta_ok, outer_bottom to center)
 И на работе я играю,
 Быть тестировщиком - вот счастье!
 
+_unit(kip_ok, left, hide with dissolve)
+_unit(sveta_ok, right, hide with dissolve)
 Пройдя сегодня новый левел,
 В отчете баги описал,
 Наелся, как всегда, пельменей

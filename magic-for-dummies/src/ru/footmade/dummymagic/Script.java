@@ -43,7 +43,8 @@ public class Script {
 		} else {
 			boolean hasAnimations = false;
 			for (Unit unit : units.values()) {
-				if (unit.currentAction.placeStart != unit.currentAction.placeEnd)
+				if (unit.currentAction.placeStart != unit.currentAction.placeEnd
+						|| unit.currentAction.effect != UnitAction.EFFECT_NONE)
 					hasAnimations = true;
 			}
 			if (hasAnimations) {
@@ -53,11 +54,15 @@ public class Script {
 				unitsRendered = true;
 			if (unitsRendered) {
 				tick = System.currentTimeMillis();
+				List<String> removeCandidates = new ArrayList<String>();
 				for (Unit unit : units.values()) {
 					if (unit.currentAction.state == UnitAction.STATE_HIDE)
-						units.remove(unit.name);
+						removeCandidates.add(unit.name);
 					else
 						unit.currentAction.placeStart = unit.currentAction.placeEnd;
+				}
+				for (String name : removeCandidates) {
+					units.remove(name);
 				}
 			}
 		}
@@ -228,7 +233,7 @@ public class Script {
 	}
 	
 	private static final Pattern placePattern = Pattern.compile("(([\\w|]*)\\s+to\\s+)?([\\w|]*)");
-	private static final Pattern statePattern = Pattern.compile("([\\w|]*)(\\s+from\\s+([\\w|]*))?");
+	private static final Pattern statePattern = Pattern.compile("([\\w|]*)(\\s+with\\s+([\\w|]*))?");
 	
 	public class UnitAction {
 		public static final int STATE_HIDE = 0;
@@ -273,9 +278,15 @@ public class Script {
 			Matcher matcher = statePattern.matcher(description);
 			if (matcher.matches()) {
 				String stateInfo = matcher.group(1);
+				String effectInfo = matcher.group(3);
 				state = STATE_SHOW;
 				if (stateInfo.equals("hide")) {
 					state = STATE_HIDE;
+				}
+				if (effectInfo == null) {
+					effect = EFFECT_NONE;
+				} else if (effectInfo.equals("dissolve")) {
+					effect = EFFECT_DISSOLVE;
 				}
 			}
 		}

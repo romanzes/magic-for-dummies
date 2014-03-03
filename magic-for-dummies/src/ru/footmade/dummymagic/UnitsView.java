@@ -5,6 +5,7 @@ import java.util.Map;
 
 import ru.footmade.dummymagic.Script.Place;
 import ru.footmade.dummymagic.Script.Unit;
+import ru.footmade.dummymagic.Script.UnitAction;
 
 import com.badlogic.gdx.graphics.Texture.TextureFilter;
 import com.badlogic.gdx.graphics.g2d.Batch;
@@ -38,6 +39,7 @@ public class UnitsView extends Actor {
 				unitCache.put(unit.name, unitSprite);
 			}
 			float x, y;
+			float transparency = 1;
 			Vector2 placeEnd = placeToCoords(unitSprite, unit.currentAction.placeEnd);
 			if (script.unitsRendered) {
 				x = placeEnd.x;
@@ -47,9 +49,15 @@ public class UnitsView extends Actor {
 				Vector2 placeStart = placeToCoords(unitSprite, unit.currentAction.placeStart);
 				x = placeStart.x + (placeEnd.x - placeStart.x) * progress;
 				y = placeStart.y + (placeEnd.y - placeStart.y) * progress;
+				if (unit.currentAction.effect == UnitAction.EFFECT_DISSOLVE) {
+					if (unit.currentAction.state == UnitAction.STATE_SHOW)
+						transparency = progress;
+					else
+						transparency = 1 - progress;
+				}
 			}
 			unitSprite.setPosition(x, y);
-			unitSprite.draw(batch, parentAlpha);
+			unitSprite.draw(batch, parentAlpha * transparency);
 		}
 	}
 	
