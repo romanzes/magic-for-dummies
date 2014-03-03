@@ -55,6 +55,8 @@ public class UnitsView extends Actor {
 				}
 			}
 			unitSprite.setPosition(x, y);
+			if (transparency < 0) transparency = 0;
+			else if (transparency > 1) transparency = 1;
 			unitSprite.draw(batch, parentAlpha * transparency);
 		}
 	}
