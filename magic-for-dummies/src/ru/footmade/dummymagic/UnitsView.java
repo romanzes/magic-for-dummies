@@ -3,9 +3,7 @@ package ru.footmade.dummymagic;
 import java.util.HashMap;
 import java.util.Map;
 
-import ru.footmade.dummymagic.Script.Place;
 import ru.footmade.dummymagic.Script.Unit;
-import ru.footmade.dummymagic.Script.UnitAction;
 
 import com.badlogic.gdx.graphics.Texture.TextureFilter;
 import com.badlogic.gdx.graphics.g2d.Batch;
@@ -61,7 +59,7 @@ public class UnitsView extends Actor {
 		}
 	}
 	
-	private Vector2 placeToCoords(Sprite sprite, Script.Place place) {
+	private Vector2 placeToCoords(Sprite sprite, Place place) {
 		float x, y;
 		switch (place.horizontal) {
 		case Place.PLACE_OUTER_LEFT:
