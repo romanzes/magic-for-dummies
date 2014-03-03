@@ -1,23 +1,27 @@
 package ru.footmade.dummymagic;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 import com.badlogic.gdx.Gdx;
 
 public class Script {
-	private static final int DRAW_CHAR_TIME = 30;
+	public static final int PERSON_MOVE_TIME = 500;
+	public static final int DRAW_CHAR_TIME = 30;
 	public static String COMMAND_PREFIX = "_";
 	
 	private Scene[] scenes;
 	public int currentScene;
 	
-	private long tick;
-	private boolean textRendered;
+	public long tick;
+	public boolean textRendered;
+	public boolean unitsRendered;
 	
-	public List<Unit> units = new ArrayList<Unit>();
+	public Map<String, Unit> units = new HashMap<String, Unit>();
 	
 	public Script() {
 		String rawScript = Gdx.files.internal("vn.vn").readString("UTF-8");
@@ -29,7 +33,34 @@ public class Script {
 	}
 	
 	public void start() {
-		tick = System.currentTimeMillis();
+		setScene(0);
+	}
+	
+	public void update() {
+		if (unitsRendered) {
+			if (getCurrentText().length() == 0)
+				next();
+		} else {
+			boolean hasAnimations = false;
+			for (Unit unit : units.values()) {
+				if (unit.currentAction.placeStart != unit.currentAction.placeEnd)
+					hasAnimations = true;
+			}
+			if (hasAnimations) {
+				if (System.currentTimeMillis() - tick > PERSON_MOVE_TIME)
+					unitsRendered = true;
+			} else
+				unitsRendered = true;
+			if (unitsRendered) {
+				tick = System.currentTimeMillis();
+				for (Unit unit : units.values()) {
+					if (unit.currentAction.state == UnitAction.STATE_HIDE)
+						units.remove(unit.name);
+					else
+						unit.currentAction.placeStart = unit.currentAction.placeEnd;
+				}
+			}
+		}
 	}
 	
 	public String getCurrentText() {
@@ -75,29 +106,28 @@ public class Script {
 		currentScene = index;
 		tick = System.currentTimeMillis();
 		textRendered = false;
+		unitsRendered = false;
 		updateUnits();
 	}
 	
 	private void updateUnits() {
 		List<UnitAction> unitActions = scenes[currentScene].unitActions;
 		for (UnitAction action : unitActions) {
-			switch (action.type) {
-			case UnitAction.ACTION_SHOW:
-				units.add(new Unit(action.unitName, action.place));
-				break;
-			case UnitAction.ACTION_HIDE:
-				for (Unit unit : units) {
-					if (unit.name.equals(action.unitName)) {
-						units.remove(unit);
-						break;
-					}
-				}
-				break;
+			Unit existing = units.get(action.unitName);
+			if (existing == null) {
+				existing = new Unit(action);
+				units.put(existing.name, existing);
+			} else {
+				if (action.placeStart == action.placeEnd)
+					action.placeStart = existing.currentAction.placeEnd;
+				existing.currentAction = action;
 			}
 		}
 	}
 	
 	public String getTextToDraw() {
+		if (!unitsRendered)
+			return null;
 		String text = getCurrentText();
 		if (!textRendered) {
 			long timePassed = System.currentTimeMillis() - tick;
@@ -146,18 +176,17 @@ public class Script {
 				jumpLabel = commandData[1];
 			} else if (commandName.equals("unit")) {
 				String unitName = commandData[1];
-				int place = Unit.PLACE_CENTER;
-				if (commandData.length > 3) {
-					String placeName = commandData[3];
-					if ("left".equals(placeName))
-						place = Unit.PLACE_LEFT;
-					else if ("right".equals(placeName))
-						place = Unit.PLACE_RIGHT;
+				if (commandData.length > 2) {
+					String placeDescription = commandData[2];
+					if (commandData.length > 3) {
+						String stateDescription = commandData[3];
+						unitActions.add(new UnitAction(unitName, placeDescription, stateDescription));
+					} else {
+						unitActions.add(new UnitAction(unitName, placeDescription));
+					}
+				} else {
+					unitActions.add(new UnitAction(unitName));
 				}
-				unitActions.add(new UnitAction(unitName, UnitAction.ACTION_SHOW, place));
-			} else if (commandName.equals("hide")) {
-				String unitName = commandData[1];
-				unitActions.add(new UnitAction(unitName, UnitAction.ACTION_HIDE, Unit.PLACE_ANY));
 			}
 		}
 	}
@@ -189,36 +218,105 @@ public class Script {
 	}
 	
 	public class Unit {
-		public static final int PLACE_ANY = 0;
-		public static final int PLACE_LEFT = 1;
-		public static final int PLACE_CENTER = 2;
-		public static final int PLACE_RIGHT = 3;
-		
 		public String name;
-		public int place;
+		public UnitAction currentAction;
 		
-		public Unit(String name) {
-			this(name, PLACE_CENTER);
-		}
-		
-		public Unit(String name, int place) {
-			this.name = name;
-			this.place = place;
+		public Unit(UnitAction action) {
+			name = action.unitName;
+			currentAction = action;
 		}
 	}
 	
+	private static final Pattern placePattern = Pattern.compile("(([\\w|]*)\\s+to\\s+)?([\\w|]*)");
+	private static final Pattern statePattern = Pattern.compile("([\\w|]*)(\\s+from\\s+([\\w|]*))?");
+	
 	public class UnitAction {
-		public static final int ACTION_SHOW = 0;
-		public static final int ACTION_HIDE = 1;
+		public static final int STATE_HIDE = 0;
+		public static final int STATE_SHOW = 1;
 		
-		public int type;
-		public int place;
+		public static final int EFFECT_NONE = 0;
+		public static final int EFFECT_DISSOLVE = 1;
+		
 		public String unitName;
+		public Place placeStart, placeEnd;
+		public int state;
+		public int effect;
 		
-		public UnitAction(String unitName, int type, int place) {
+		public UnitAction(String unitName) {
 			this.unitName = unitName;
-			this.type = type;
-			this.place = place;
+			state = STATE_SHOW;
+		}
+		
+		public UnitAction(String unitName, String placeDescription) {
+			this(unitName);
+			parseAnimation(placeDescription);
+		}
+		
+		public UnitAction(String unitName, String placeDescription, String stateDescription) {
+			this(unitName, placeDescription);
+			parseState(stateDescription);
+		}
+		
+		private void parseAnimation(String description) {
+			Matcher matcher = placePattern.matcher(description);
+			if (matcher.matches()) {
+				placeEnd = new Place(matcher.group(3));
+				String placeStartInfo = matcher.group(2);
+				if (placeStartInfo != null)
+					placeStart = new Place(placeStartInfo);
+				else
+					placeStart = placeEnd;
+			}
+		}
+		
+		private void parseState(String description) {
+			Matcher matcher = statePattern.matcher(description);
+			if (matcher.matches()) {
+				String stateInfo = matcher.group(1);
+				state = STATE_SHOW;
+				if (stateInfo.equals("hide")) {
+					state = STATE_HIDE;
+				}
+			}
+		}
+	}
+	
+	public class Place {
+		public static final int PLACE_CENTER = 0;
+		public static final int PLACE_OUTER_LEFT = 0x1;
+		public static final int PLACE_LEFT = 0x2;
+		public static final int PLACE_RIGHT = 0x4;
+		public static final int PLACE_OUTER_RIGHT = 0x8;
+		public static final int PLACE_OUTER_BOTTOM = 0x10;
+		public static final int PLACE_BOTTOM = 0x20;
+		public static final int PLACE_TOP = 0x40;
+		public static final int PLACE_OUTER_TOP = 0x80;
+		
+		public int vertical, horizontal;
+		
+		public Place(String description) {
+			horizontal = PLACE_CENTER;
+			vertical = PLACE_BOTTOM;
+			String[] parts = description.split("\\|");
+			for (String part : parts) {
+				if (part.equals("outer_left")) {
+					horizontal = PLACE_OUTER_LEFT;
+				} else if (part.equals("left")) {
+					horizontal = PLACE_LEFT;
+				} else if (part.equals("right")) {
+					horizontal = PLACE_RIGHT;
+				} else if (part.equals("outer_right")) {
+					horizontal = PLACE_OUTER_RIGHT;
+				} else if (part.equals("outer_top")) {
+					vertical = PLACE_OUTER_TOP;
+				} else if (part.equals("top")) {
+					vertical = PLACE_TOP;
+				} else if (part.equals("bottom")) {
+					vertical = PLACE_BOTTOM;
+				} else if (part.equals("outer_bottom")) {
+					vertical = PLACE_OUTER_BOTTOM;
+				}
+			}
 		}
 	}
 }

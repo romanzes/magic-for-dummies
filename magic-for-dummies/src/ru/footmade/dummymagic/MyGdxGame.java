@@ -30,6 +30,7 @@ public class MyGdxGame implements ApplicationListener {
 
 	@Override
 	public void render() {
+		script.update();
 		renderer.render();
 	}
 

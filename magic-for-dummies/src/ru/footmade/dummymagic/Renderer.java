@@ -82,7 +82,7 @@ public class Renderer implements Disposable {
 		backgroundImage.setSize(scrW, scrH);
 		stage.addActor(backgroundImage);
 		
-		unitsView = new UnitsView(atlas, script.units);
+		unitsView = new UnitsView(atlas, script);
 		unitsView.setSize(scrW, scrH);
 		stage.addActor(unitsView);
 		
@@ -120,7 +120,7 @@ public class Renderer implements Disposable {
 	}
 	
 	private void refreshText() {
-		textFrame.setVisible(script.getCurrentText().length() > 0);
+		textFrame.setVisible(script.getCurrentText().length() > 0 && script.unitsRendered);
 		text.setText(script.getTextToDraw());
 	}
 	
