@@ -10,7 +10,7 @@ import java.util.regex.Pattern;
 import com.badlogic.gdx.Gdx;
 
 public class Script {
-	public static final int PERSON_MOVE_TIME = 500;
+	public static final int PERSON_MOVE_TIME = 700;
 	public static final int DRAW_CHAR_TIME = 30;
 	public static String COMMAND_PREFIX = "_";
 	
@@ -58,8 +58,10 @@ public class Script {
 				for (Unit unit : units.values()) {
 					if (unit.currentAction.state == UnitAction.STATE_HIDE)
 						removeCandidates.add(unit.name);
-					else
+					else {
 						unit.currentAction.placeStart = unit.currentAction.placeEnd;
+						unit.currentAction.effect = UnitAction.EFFECT_NONE;
+					}
 				}
 				for (String name : removeCandidates) {
 					units.remove(name);
