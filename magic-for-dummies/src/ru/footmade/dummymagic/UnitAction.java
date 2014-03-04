@@ -17,30 +17,41 @@ public class UnitAction {
 	
 	public UnitAction(String unitName) {
 		this.unitName = unitName;
+		placeStart = new Place();
+		placeEnd = placeStart;
 		state = STATE_SHOW;
+		effect = EFFECT_NONE;
 	}
 	
 	public UnitAction(String unitName, String placeDescription) {
-		this(unitName);
+		this.unitName = unitName;
 		parseAnimation(placeDescription);
+		state = STATE_SHOW;
+		effect = EFFECT_NONE;
 	}
 	
 	public UnitAction(String unitName, String placeDescription, String stateDescription) {
-		this(unitName, placeDescription);
+		this.unitName = unitName;
+		parseAnimation(placeDescription);
 		parseState(stateDescription);
 	}
 	
 	private static final Pattern placePattern = Pattern.compile("(([\\w|]*)\\s+to\\s+)?([\\w|]*)");
 	
 	private void parseAnimation(String description) {
-		Matcher matcher = placePattern.matcher(description);
-		if (matcher.matches()) {
-			placeEnd = new Place(matcher.group(3));
-			String placeStartInfo = matcher.group(2);
-			if (placeStartInfo != null)
-				placeStart = new Place(placeStartInfo);
-			else
-				placeStart = placeEnd;
+		if (description == null) {
+			placeStart = new Place();
+			placeEnd = placeStart;
+		} else {
+			Matcher matcher = placePattern.matcher(description);
+			if (matcher.matches()) {
+				placeEnd = new Place(matcher.group(3));
+				String placeStartInfo = matcher.group(2);
+				if (placeStartInfo != null)
+					placeStart = new Place(placeStartInfo);
+				else
+					placeStart = placeEnd;
+			}
 		}
 	}
 	

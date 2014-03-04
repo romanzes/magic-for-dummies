@@ -13,6 +13,11 @@ public class Place {
 	
 	public int vertical, horizontal;
 	
+	public Place() {
+		horizontal = PLACE_CENTER;
+		vertical = PLACE_BOTTOM;
+	}
+	
 	public Place(String description) {
 		horizontal = PLACE_CENTER;
 		vertical = PLACE_BOTTOM;
