@@ -44,6 +44,7 @@ public class UnitsView extends Actor {
 				y = placeEnd.y;
 			} else {
 				float progress = ((float) (System.currentTimeMillis() - script.tick)) / Script.PERSON_MOVE_TIME;
+				if (progress > 1) progress = 1;
 				Vector2 placeStart = placeToCoords(unitSprite, unit.currentAction.placeStart);
 				x = placeStart.x + (placeEnd.x - placeStart.x) * progress;
 				y = placeStart.y + (placeEnd.y - placeStart.y) * progress;
@@ -55,8 +56,6 @@ public class UnitsView extends Actor {
 				}
 			}
 			unitSprite.setPosition(x, y);
-			if (transparency < 0) transparency = 0;
-			else if (transparency > 1) transparency = 1;
 			unitSprite.draw(batch, parentAlpha * transparency);
 		}
 	}
