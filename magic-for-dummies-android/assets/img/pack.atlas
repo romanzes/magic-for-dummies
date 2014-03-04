@@ -444,30 +444,23 @@ filter: Nearest,Nearest
 repeat: none
 pers/book
   rotate: false
+  xy: 1542, 2
+  size: 480, 768
+  orig: 480, 768
+  offset: 0, 0
+  index: -1
+pers/kip_yoshi
+  rotate: false
   xy: 2, 2
-  size: 480, 768
-  orig: 480, 768
+  size: 768, 768
+  orig: 768, 768
   offset: 0, 0
   index: -1
-pers/furi_left
+pers/rainbow
   rotate: false
-  xy: 484, 2
-  size: 480, 768
-  orig: 480, 768
-  offset: 0, 0
-  index: -1
-pers/furi_right
-  rotate: false
-  xy: 966, 2
-  size: 480, 768
-  orig: 480, 768
-  offset: 0, 0
-  index: -1
-pers/gop1
-  rotate: false
-  xy: 1448, 2
-  size: 480, 768
-  orig: 480, 768
+  xy: 772, 2
+  size: 768, 768
+  orig: 768, 768
   offset: 0, 0
   index: -1
 
@@ -475,28 +468,28 @@ pack20.png
 format: RGBA8888
 filter: Nearest,Nearest
 repeat: none
-pers/gop2
+pers/furi
   rotate: false
   xy: 2, 2
   size: 480, 768
   orig: 480, 768
   offset: 0, 0
   index: -1
-pers/gop3
+pers/furi_anti
   rotate: false
   xy: 484, 2
   size: 480, 768
   orig: 480, 768
   offset: 0, 0
   index: -1
-pers/kip_ok
+pers/gop1
   rotate: false
   xy: 966, 2
   size: 480, 768
   orig: 480, 768
   offset: 0, 0
   index: -1
-pers/kipmag_ok
+pers/gop2
   rotate: false
   xy: 1448, 2
   size: 480, 768
@@ -508,23 +501,30 @@ pack21.png
 format: RGBA8888
 filter: Nearest,Nearest
 repeat: none
-pers/kip_yoshi
+pers/gop3
   rotate: false
   xy: 2, 2
-  size: 700, 768
-  orig: 700, 768
-  offset: 0, 0
-  index: -1
-pers/sky_naked
-  rotate: false
-  xy: 704, 2
   size: 480, 768
   orig: 480, 768
   offset: 0, 0
   index: -1
-pers/sky_ok
+pers/kip_ok
   rotate: false
-  xy: 1186, 2
+  xy: 484, 2
+  size: 480, 768
+  orig: 480, 768
+  offset: 0, 0
+  index: -1
+pers/kipmag_ok
+  rotate: false
+  xy: 966, 2
+  size: 480, 768
+  orig: 480, 768
+  offset: 0, 0
+  index: -1
+pers/sky_naked
+  rotate: false
+  xy: 1448, 2
   size: 480, 768
   orig: 480, 768
   offset: 0, 0
@@ -534,23 +534,30 @@ pack22.png
 format: RGBA8888
 filter: Nearest,Nearest
 repeat: none
-pers/sky_oo
+pers/sky_ok
   rotate: false
   xy: 2, 2
   size: 480, 768
   orig: 480, 768
   offset: 0, 0
   index: -1
-pers/sveta_ok
+pers/sky_oo
   rotate: false
   xy: 484, 2
   size: 480, 768
   orig: 480, 768
   offset: 0, 0
   index: -1
-pers/zoy_ok
+pers/sveta_ok
   rotate: false
   xy: 966, 2
+  size: 480, 768
+  orig: 480, 768
+  offset: 0, 0
+  index: -1
+pers/zoy_ok
+  rotate: false
+  xy: 1448, 2
   size: 480, 768
   orig: 480, 768
   offset: 0, 0
