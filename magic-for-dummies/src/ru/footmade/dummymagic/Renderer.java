@@ -8,13 +8,11 @@ import com.badlogic.gdx.graphics.Texture.TextureFilter;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.NinePatch;
 import com.badlogic.gdx.graphics.g2d.TextureAtlas;
-import com.badlogic.gdx.graphics.g2d.TextureAtlas.AtlasRegion;
 import com.badlogic.gdx.graphics.g2d.freetype.FreeTypeFontGenerator;
 import com.badlogic.gdx.graphics.g2d.freetype.FreeTypeFontGenerator.FreeTypeFontParameter;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.Container;
-import com.badlogic.gdx.scenes.scene2d.ui.Image;
 import com.badlogic.gdx.scenes.scene2d.ui.Label;
 import com.badlogic.gdx.scenes.scene2d.ui.Label.LabelStyle;
 import com.badlogic.gdx.scenes.scene2d.ui.Table;
@@ -24,9 +22,7 @@ import com.badlogic.gdx.scenes.scene2d.utils.Align;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.badlogic.gdx.scenes.scene2d.utils.Drawable;
 import com.badlogic.gdx.scenes.scene2d.utils.NinePatchDrawable;
-import com.badlogic.gdx.scenes.scene2d.utils.TextureRegionDrawable;
 import com.badlogic.gdx.utils.Disposable;
-import com.badlogic.gdx.utils.Scaling;
 
 public class Renderer implements Disposable {
 	private static final float SCREEN_HEIGHT = 1000;
@@ -46,11 +42,11 @@ public class Renderer implements Disposable {
 	private BitmapFont font;
 	
 	public Stage stage;
-	private TextureRegionDrawable background;
 	public Container textFrame;
 	public Label text;
 	public Table choicesList;
 	private TextButtonStyle choiceStyle;
+	private BackgroundView backgroundView;
 	private UnitsView unitsView;
 	
 	public Renderer(Script script) {
@@ -76,11 +72,9 @@ public class Renderer implements Disposable {
 		
 		stage = new Stage(scrW, scrH);
 		
-		background = new TextureRegionDrawable();
-		Image backgroundImage = new Image(background, Scaling.fill);
-		backgroundImage.setPosition(0, 0);
-		backgroundImage.setSize(scrW, scrH);
-		stage.addActor(backgroundImage);
+		backgroundView = new BackgroundView(atlas, script);
+		backgroundView.setSize(scrW, scrH);
+		stage.addActor(backgroundView);
 		
 		unitsView = new UnitsView(atlas, script);
 		unitsView.setSize(scrW, scrH);
@@ -109,16 +103,6 @@ public class Renderer implements Disposable {
 		stage.addActor(choicesList);
 	}
 	
-	private String backgroundOldName;
-	
-	private void refreshBackground() {
-		if (backgroundOldName != script.getCurrentBackground()) {
-			AtlasRegion region = atlas.findRegion("bg/" + script.getCurrentBackground());
-			region.getTexture().setFilter(TextureFilter.Linear, TextureFilter.Linear);
-			background.setRegion(region);
-		}
-	}
-	
 	private void refreshText() {
 		textFrame.setVisible(script.getCurrentText().length() > 0 && script.unitsRendered);
 		text.setText(script.getTextToDraw());
@@ -126,7 +110,7 @@ public class Renderer implements Disposable {
 	
 	private void refreshChoices() {
 		if (script.currentScene != oldScene) {
-			java.util.List<Script.Button> buttons = script.getCurrentButtons();
+			java.util.List<Button> buttons = script.getCurrentButtons();
 			choicesList.setVisible(buttons.size() > 0);
 			if (buttons.size() > 0) {
 				choicesList.clearChildren();
@@ -150,8 +134,7 @@ public class Renderer implements Disposable {
 	
 	private int oldScene;
 	
-	public void render() {		
-		refreshBackground();
+	public void render() {
 		refreshText();
 		refreshChoices();
 		

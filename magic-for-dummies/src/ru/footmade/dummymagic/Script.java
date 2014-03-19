@@ -4,20 +4,20 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
 
 import com.badlogic.gdx.Gdx;
 
 public class Script {
+	public static final int BACKGROUND_CHANGE_TIME = 1000;
 	public static final int PERSON_MOVE_TIME = 700;
 	public static final int DRAW_CHAR_TIME = 30;
-	public static String COMMAND_PREFIX = "_";
 	
 	private Scene[] scenes;
 	public int currentScene;
+	public int prevScene;
 	
 	public long tick;
+	public boolean backgroundRendered;
 	public boolean textRendered;
 	public boolean unitsRendered;
 	
@@ -37,49 +37,66 @@ public class Script {
 	}
 	
 	public void update() {
-		if (unitsRendered) {
-			if (getCurrentText().length() == 0)
-				next();
-		} else {
-			boolean hasAnimations = false;
-			for (Unit unit : units.values()) {
-				if (unit.currentAction.placeStart != unit.currentAction.placeEnd
-						|| unit.currentAction.effect != UnitAction.EFFECT_NONE)
-					hasAnimations = true;
-			}
-			if (hasAnimations) {
-				if (System.currentTimeMillis() - tick > PERSON_MOVE_TIME)
-					unitsRendered = true;
-			} else
-				unitsRendered = true;
+		if (backgroundRendered) {
 			if (unitsRendered) {
-				tick = System.currentTimeMillis();
-				List<String> removeCandidates = new ArrayList<String>();
+				if (getCurrentText().length() == 0)
+					next();
+			} else {
+				boolean hasAnimations = false;
 				for (Unit unit : units.values()) {
-					if (unit.currentAction.state == UnitAction.STATE_HIDE)
-						removeCandidates.add(unit.name);
-					else {
-						unit.currentAction.placeStart = unit.currentAction.placeEnd;
-						unit.currentAction.effect = UnitAction.EFFECT_NONE;
+					if (unit.currentAction.placeStart != unit.currentAction.placeEnd
+							|| unit.currentAction.effect != UnitAction.EFFECT_NONE)
+						hasAnimations = true;
+				}
+				if (hasAnimations) {
+					if (System.currentTimeMillis() - tick > PERSON_MOVE_TIME)
+						unitsRendered = true;
+				} else
+					unitsRendered = true;
+				if (unitsRendered) {
+					tick = System.currentTimeMillis();
+					List<String> removeCandidates = new ArrayList<String>();
+					for (Unit unit : units.values()) {
+						if (unit.currentAction.state == UnitAction.STATE_HIDE)
+							removeCandidates.add(unit.name);
+						else {
+							unit.currentAction.placeStart = unit.currentAction.placeEnd;
+							unit.currentAction.effect = UnitAction.EFFECT_NONE;
+						}
+					}
+					for (String name : removeCandidates) {
+						units.remove(name);
 					}
 				}
-				for (String name : removeCandidates) {
-					units.remove(name);
+			}
+		} else {
+			Scene scene = scenes[currentScene];
+			if (scene.backgroundEffect == Scene.BG_EFFECT_NONE) {
+				backgroundRendered = true;
+				tick = System.currentTimeMillis();
+			} else {
+				if (System.currentTimeMillis() - tick > BACKGROUND_CHANGE_TIME) {
+					backgroundRendered = true;
+					tick = System.currentTimeMillis();
 				}
 			}
 		}
 	}
 	
-	public String getCurrentText() {
-		return scenes[currentScene].text;
+	public Scene getCurrentScene() {
+		return scenes[currentScene];
 	}
 	
-	public String getCurrentBackground() {
-		return scenes[currentScene].background;
+	public Scene getPreviousScene() {
+		return scenes[prevScene];
+	}
+	
+	public String getCurrentText() {
+		return getCurrentScene().text;
 	}
 	
 	public List<Button> getCurrentButtons() {
-		return scenes[currentScene].buttons;
+		return getCurrentScene().buttons;
 	}
 	
 	private void goLabel(String label) {
@@ -110,11 +127,20 @@ public class Script {
 	}
 	
 	private void setScene(int index) {
+		prevScene = currentScene;
 		currentScene = index;
 		tick = System.currentTimeMillis();
-		textRendered = false;
+		backgroundRendered = false;
 		unitsRendered = false;
+		textRendered = false;
+		updateBackground();
 		updateUnits();
+		update();
+	}
+	
+	private void updateBackground() {
+		if (scenes[currentScene].background == null)
+			scenes[currentScene].background = scenes[prevScene].background;
 	}
 	
 	private void updateUnits() {
@@ -146,91 +172,5 @@ public class Script {
 			}
 		}
 		return text;
-	}
-	
-	private class Scene {
-		private String text;
-		private String background;
-		private List<Button> buttons = new ArrayList<Button>();
-		private List<UnitAction> unitActions = new ArrayList<UnitAction>();
-		private String label, jumpLabel;
-		
-		public Scene(String raw) {
-			StringBuilder textBuilder = new StringBuilder();
-			String strings[] = raw.split("(\\r\\n?)|(\\n\\r?)");
-			for (String string : strings) {
-				if (string.startsWith(COMMAND_PREFIX)) {
-					processCommand(string.substring(COMMAND_PREFIX.length()).trim());
-				} else {
-					textBuilder.append(string).append("\n");
-				}
-			}
-			text = textBuilder.toString();
-		}
-		
-		private void processCommand(String command) {
-			String[] commandData = parseCommand(command);
-			String commandName = commandData[0];
-			if (commandName.equals("bg")) {
-				background = commandData[1];
-			} else if (commandName.equals("btn")) {
-				String btnText = commandData[1];
-				String btnLabel = commandData[2];
-				buttons.add(new Button(btnText, btnLabel));
-			} else if (commandName.equals("label")) {
-				label = commandData[1];
-			} else if (commandName.equals("jump")) {
-				jumpLabel = commandData[1];
-			} else if (commandName.equals("unit")) {
-				String unitName = commandData[1];
-				if (commandData.length > 2) {
-					String placeDescription = commandData[2];
-					if (commandData.length > 3) {
-						String stateDescription = commandData[3];
-						unitActions.add(new UnitAction(unitName, placeDescription, stateDescription));
-					} else {
-						unitActions.add(new UnitAction(unitName, placeDescription));
-					}
-				} else {
-					unitActions.add(new UnitAction(unitName));
-				}
-			}
-		}
-	}
-	
-	private static final Pattern commandPattern = Pattern.compile("(\\w*)\\s*\\(([^()]*)\\)");
-	
-	private static String[] parseCommand(String command) {
-		Matcher matcher = commandPattern.matcher(command);
-		if (!matcher.matches())
-			throw new IllegalArgumentException("Bad command syntax");
-		String commandName = matcher.group(1).trim();
-		String[] args = matcher.group(2).split(",");
-		String[] result = new String[args.length + 1];
-		result[0] = commandName;
-		for (int i = 0; i < args.length; i++) {
-			result[i + 1] = args[i].trim();
-		}
-		return result;
-	}
-	
-	public class Button {
-		public String text;
-		public String label;
-		
-		public Button(String text, String label) {
-			this.text = text;
-			this.label = label;
-		}
-	}
-	
-	public class Unit {
-		public String name;
-		public UnitAction currentAction;
-		
-		public Unit(UnitAction action) {
-			name = action.unitName;
-			currentAction = action;
-		}
 	}
 }

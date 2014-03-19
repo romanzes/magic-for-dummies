@@ -3,8 +3,6 @@ package ru.footmade.dummymagic;
 import java.util.HashMap;
 import java.util.Map;
 
-import ru.footmade.dummymagic.Script.Unit;
-
 import com.badlogic.gdx.graphics.Texture.TextureFilter;
 import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.graphics.g2d.Sprite;
@@ -26,6 +24,9 @@ public class UnitsView extends Actor {
 	
 	@Override
 	public void draw(Batch batch, float parentAlpha) {
+		if (!script.backgroundRendered)
+			return;
+		
 		for (Unit unit : script.units.values()) {
 			Sprite unitSprite = unitCache.get(unit.name);
 			if (unitSprite == null) {

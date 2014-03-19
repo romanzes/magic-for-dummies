@@ -24,7 +24,7 @@ _bg(black)
 Я в сон как будто погрузился.
 Но всё-таки остался тут.
 
-_bg(kipsroom)
+_bg(kipsroom, dissolve)
 _unit(kip_ok, center, show with dissolve)
 Мне снится комната моя,
 Вот я валяюсь на диване,
@@ -82,7 +82,7 @@ _unit(kip_ok, center, hide with dissolve)
 Я тестить хард не нанимался.
 Вот Игры тестить - это да!
 
-_bg(office)
+_bg(office, dissolve)
 Однажды к Зою забежал -
 Один старинный мой приятель.
 Он, помню, мидлеты писал,
@@ -116,7 +116,7 @@ _unit(zoy_ok, center, show with dissolve)
 
 _unit(zoy_ok, center, hide with dissolve)
 
-_bg(pab)
+_bg(pab, fade)
 И лишь в пивнушке уже сидя,
 Допер, что я-то не играю,
 А руки-то предметы "видят"!
@@ -215,7 +215,7 @@ _unit(zoy_ok, right to center)
 _unit(zoy_ok, center, hide with dissolve)
 _unit(sveta_ok, left, hide with dissolve)
 
-_bg(street)
+_bg(street, dissolve)
 От грусти с пивом вперемешку
 Я ничего не замечал.
 По темным улицам неспешно
@@ -297,7 +297,7 @@ _label(street)
 И... жар в ладони! Мать твою!
 Оно работает, в натуре!
 
-_bg(portal)
+_bg(portal, dissolve)
 Побрел, потом и побежал
 И выскочил на яркий свет.
 Над мостовой висел портал!
@@ -353,19 +353,19 @@ _label(format)
 _unit(zoy_ok, right, hide with dissolve)
 _unit(sveta_ok, left, hide with dissolve)
 
-_bg(street)
+_bg(street, fade)
 Схватила лапкою за ворот
 Меня, а Зоя - за рукав,
 И мы пошли за нею в город,
 Лишь пару раз всего упав.
 
-_bg(park)
+_bg(park, fade)
 До сквера быстро доскакали,
 Цепляясь обо все подряд.
 А возле сквера увидали
 Бандитский пионер-отряд.
 
-_bg(gens)
+_bg(gens, dissolve)
 Стоят все в солнечных очках.
 И это, между прочим, ночью!
 Да в черных кожаных плащах.
@@ -428,7 +428,7 @@ _unit(sveta_ok, center to outer_right, hide)
 Почуял сразу, что зверею,
 Лишь мастера отмашку дали.
 
-_bg(shooter)
+_bg(shooter, dissolve)
 Во тьме все техногены скрылись,
 Но для меня - все на виду,
 Их контуры в ночи светились.
@@ -449,13 +449,13 @@ _bg(shooter)
 Я вижу каждого в деталях -
 Не скрыться вам, не увернуться!
 
-_bg(park)
+_bg(park, fade)
 Все контуры врагов пропали,
 Лишь темнотой экран мерцал.
 Мы что же, всех перестреляли?
 Да нет же - я перестрелял!
 
-_bg(gens)
+_bg(gens, dissolve)
 На месте встречи все толпились,
 Мою победу обсуждая.
 Без перерыва матерились,
@@ -466,7 +466,7 @@ _bg(gens)
 Ворчали люди ошалело, -
 Как ловко поснимал всех нас
 
-_bg(park)
+_bg(park, dissolve)
 _unit(sveta_ok, outer_left to left)
 _unit(zoy_ok, outer_right to right)
 Цветочек тоже загрустила,
@@ -496,10 +496,12 @@ _unit(zoy_ok, center, hide with dissolve)
 Мои дурацкие глаза.
 Да я-то в чем же виноват?
 В чем дело, кто бы мне сказал!
+
+_bg(street, fade)
 _jump(street)
 
 _label(portal)
-_bg(black)
+_bg(black, dissolve)
 Когда-то грыжу вырезали,
 Наркоз вкололи, всё путем.
 Лишь голоса в башке звучали:
@@ -510,7 +512,7 @@ _bg(black)
 И голос в голове услышал:
 "Прокол на Деревянный Лес"
 
-_bg(forest)
+_bg(forest, dissolve)
 Еще не въехал в смысл фразы,
 С глаз будто пелену смахнуло.
 Что вижу, и не понял сразу -
@@ -521,7 +523,7 @@ _bg(forest)
 Но как же просто всё и тупо -
 Я лишь стою на голове!
 
-_bg(black)
+_bg(black, dissolve)
 И в тот же миг качнуло ветром
 Упал плашмя лицом вперед.
 Видать я сбрендил незаметно.
@@ -532,7 +534,7 @@ _bg(black)
 Ты ж без меня дорогу не найдёшь".
 Я голову поднял, открыл глаза.
 
-_bg(forest)
+_bg(forest, dissolve)
 _unit(furi, center, show with dissolve)
 Неподалёку белочка сидела
 Размерами с приличную дворняжку
@@ -586,7 +588,7 @@ _unit(furi, center, show with dissolve)
 
 _unit(furi, center, hide with dissolve)
 
-_bg(town)
+_bg(town, fade)
 Когда закончился лесок,
 Я сразу город увидал.
 Еще короткий марш-бросок -
@@ -602,7 +604,7 @@ _bg(town)
 Я вновь на Фури покосился
 И вслед за ней протопал в зал.
 
-_bg(tavern)
+_bg(tavern, fade)
 Трактир "типичный а-ля-русс"  -
 Трактирщик, служка, половой.
 Как карусель сижу верчусь,
@@ -700,13 +702,13 @@ _unit(furi, center, hide with dissolve)
 И незаметно задремал
 Да как давай на лавке спать!
 
-_bg(black)
+_bg(black, dissolve)
 "На комнате я сэкономил", -
 С утра подумалось некстати.
 Но, вытянув удобно ноги,
 Я понял, что лежу в кровати.
 
-_bg(numer)
+_bg(numer, dissolve)
 Носки мне кто-то постирал,
 У изголовья их повесил.
 Я про себя похохотал.
@@ -786,7 +788,7 @@ _unit(kip_ok, center to left)
 
 _unit(kip_ok, left to outer_left, hide)
 
-_bg(town)
+_bg(town, fade)
 _unit(furi, outer_right to right)
 
 _unit(furi, right to center)
@@ -804,7 +806,7 @@ _unit(kip_ok, left to outer_left, hide)
 Похоже, маги всей толпой
 Нас с Фури у ворот встречали.
 
-_bg(tower)
+_bg(tower, fade)
 Гурьба согбенных старичков,
 Все в балахонах разноцветных.
 Смотрю на них из-под очков.
@@ -827,13 +829,13 @@ _unit(furi, center, show with dissolve)
 Опять за белкою пустился.
 
 _unit(furi, center, hide with dissolve)
-_bg(magicroom)
+_bg(magicroom, fade)
 Скатились всей толпой в подвал,
 Но дальше как-то не решились.
 Один нам ключик передал,
 И все поспешно удалились.
 
-_bg(black)
+_bg(black, fade)
 ...
 
 Начало демки до конца Вы дочитали.
