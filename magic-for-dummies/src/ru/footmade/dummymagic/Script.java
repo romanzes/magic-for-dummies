@@ -158,19 +158,19 @@ public class Script {
 		}
 	}
 	
-	public String getTextToDraw() {
+	public int getCharCountToDraw() {
 		if (!unitsRendered)
-			return null;
-		String text = getCurrentText();
+			return 0;
+		int textLength = scenes[currentScene].textLength;
 		if (!textRendered) {
 			long timePassed = System.currentTimeMillis() - tick;
-			long charsCount = timePassed / DRAW_CHAR_TIME;
-			if (charsCount >= text.length()) {
+			int charsCount = (int) (timePassed / DRAW_CHAR_TIME);
+			if (charsCount >= textLength) {
 				textRendered = true;
 			} else {
-				text = text.substring(0, (int) charsCount);
+				return charsCount;
 			}
 		}
-		return text;
+		return textLength;
 	}
 }

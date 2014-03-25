@@ -13,6 +13,7 @@ public class Scene {
 	public static final int BG_EFFECT_FADE = 2;
 	
 	public String text;
+	public int textLength;
 	public String background;
 	public int backgroundEffect;
 	public List<Button> buttons = new ArrayList<Button>();
@@ -29,7 +30,8 @@ public class Scene {
 				textBuilder.append(string).append("\n");
 			}
 		}
-		text = textBuilder.toString();
+		text = textBuilder.toString().trim();
+		textLength = text.replaceAll("\\{[^\\}]*\\}", "").length();
 	}
 	
 	private void processCommand(String command) {

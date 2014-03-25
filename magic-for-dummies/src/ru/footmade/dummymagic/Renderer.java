@@ -13,12 +13,9 @@ import com.badlogic.gdx.graphics.g2d.freetype.FreeTypeFontGenerator.FreeTypeFont
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.Container;
-import com.badlogic.gdx.scenes.scene2d.ui.Label;
-import com.badlogic.gdx.scenes.scene2d.ui.Label.LabelStyle;
 import com.badlogic.gdx.scenes.scene2d.ui.Table;
 import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
 import com.badlogic.gdx.scenes.scene2d.ui.TextButton.TextButtonStyle;
-import com.badlogic.gdx.scenes.scene2d.utils.Align;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.badlogic.gdx.scenes.scene2d.utils.Drawable;
 import com.badlogic.gdx.scenes.scene2d.utils.NinePatchDrawable;
@@ -43,7 +40,7 @@ public class Renderer implements Disposable {
 	
 	public Stage stage;
 	public Container textFrame;
-	public Label text;
+	public ColoredText text;
 	public Table choicesList;
 	private TextButtonStyle choiceStyle;
 	private BackgroundView backgroundView;
@@ -80,8 +77,7 @@ public class Renderer implements Disposable {
 		unitsView.setSize(scrW, scrH);
 		stage.addActor(unitsView);
 		
-		text = new Label("", new LabelStyle(font, Color.WHITE));
-		text.setAlignment(Align.left | Align.top);
+		text = new ColoredText(font);
 		
 		textFrame = new Container(text);
 		textFrame.fill();
@@ -105,7 +101,10 @@ public class Renderer implements Disposable {
 	
 	private void refreshText() {
 		textFrame.setVisible(script.getCurrentText().length() > 0 && script.unitsRendered);
-		text.setText(script.getTextToDraw());
+		if (script.currentScene != oldScene) {
+			text.loadMarkedText(script.getCurrentText());
+		}
+		text.setTextLimit(script.getCharCountToDraw());
 	}
 	
 	private void refreshChoices() {
@@ -132,7 +131,7 @@ public class Renderer implements Disposable {
 		}
 	}
 	
-	private int oldScene;
+	private int oldScene = -1;
 	
 	public void render() {
 		refreshText();

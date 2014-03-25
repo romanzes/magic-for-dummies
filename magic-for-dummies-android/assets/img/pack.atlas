@@ -415,7 +415,7 @@ gui/frame
   xy: 354, 52
   size: 254, 254
   split: 99, 99, 99, 99
-  pad: 50, 46, 28, 29
+  pad: 50, 46, 43, 29
   orig: 254, 254
   offset: 0, 0
   index: -1
