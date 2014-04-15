@@ -19,6 +19,7 @@ public class Scene {
 	public List<Button> buttons = new ArrayList<Button>();
 	public List<UnitAction> unitActions = new ArrayList<UnitAction>();
 	public String label, jumpLabel;
+	public AudioInfo music, sound, voice;
 	
 	public Scene(String raw) {
 		StringBuilder textBuilder = new StringBuilder();
@@ -68,6 +69,36 @@ public class Scene {
 			} else {
 				unitActions.add(new UnitAction(unitName));
 			}
+		} else if (commandName.equals("music")) {
+			music = new AudioInfo();
+			if (commandData.length > 1) {
+				music.name = commandData[1];
+				if (commandData.length > 2) {
+					if (commandData[2].equals("loop")) {
+						music.looped = true;
+					}
+				}
+			}
+		} else if (commandName.equals("sound")) {
+			sound = new AudioInfo();
+			if (commandData.length > 1) {
+				sound.name = commandData[1];
+				if (commandData.length > 2) {
+					if (commandData[2].equals("loop")) {
+						sound.looped = true;
+					}
+				}
+			}
+		} else if (commandName.equals("voice")) {
+			voice = new AudioInfo();
+			if (commandData.length > 1) {
+				voice.name = commandData[1];
+				if (commandData.length > 2) {
+					if (commandData[2].equals("loop")) {
+						voice.looped = true;
+					}
+				}
+			}
 		}
 	}
 	
@@ -78,7 +109,10 @@ public class Scene {
 		if (!matcher.matches())
 			throw new IllegalArgumentException("Bad command syntax");
 		String commandName = matcher.group(1).trim();
-		String[] args = matcher.group(2).split(",");
+		String argData = matcher.group(2).trim();
+		if (argData.length() == 0)
+			return new String[] { commandName };
+		String[] args = argData.split(",");
 		String[] result = new String[args.length + 1];
 		result[0] = commandName;
 		for (int i = 0; i < args.length; i++) {

@@ -87,6 +87,12 @@ public class Renderer implements Disposable {
 		textFrame.setPosition(FRAME_PADDING, FRAME_PADDING);
 		textFrame.setSize(scrW - FRAME_PADDING * 2, FRAME_HEIGHT);
 		stage.addActor(textFrame);
+		textFrame.addListener(new ClickListener() {
+			@Override
+			public void clicked(InputEvent event, float x, float y) {
+				Renderer.this.script.next();
+			}
+		});
 		
 		Drawable listItem = new NinePatchDrawable(atlas.createPatch("gui/list_item"));
 		Drawable listItemPressed = new NinePatchDrawable(atlas.createPatch("gui/list_item_pressed"));
