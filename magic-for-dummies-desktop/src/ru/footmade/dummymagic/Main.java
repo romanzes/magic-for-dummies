@@ -11,11 +11,6 @@ public class Main {
 		cfg.width = 1280;
 		cfg.height = 768;
 		
-		/*Settings settings = new Settings();
-		settings.pot = false;
-		settings.maxWidth = 2048;
-		TexturePacker2.process(settings, "../images", "../magic-for-dummies-android/assets/img", "pack");*/
-		
 		new LwjglApplication(new MyGdxGame(), cfg);
 	}
 }
