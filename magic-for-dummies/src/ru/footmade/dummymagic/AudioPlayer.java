@@ -1,5 +1,7 @@
 package ru.footmade.dummymagic;
 
+import ru.footmade.dummymagic.entities.Scene;
+
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.audio.Music;
 import com.badlogic.gdx.utils.Disposable;

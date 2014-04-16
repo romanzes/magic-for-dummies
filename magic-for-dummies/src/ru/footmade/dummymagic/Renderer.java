@@ -1,5 +1,10 @@
 package ru.footmade.dummymagic;
 
+import ru.footmade.dummymagic.entities.Button;
+import ru.footmade.dummymagic.ui.BackgroundView;
+import ru.footmade.dummymagic.ui.ColoredText;
+import ru.footmade.dummymagic.ui.UnitsView;
+
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.GL10;

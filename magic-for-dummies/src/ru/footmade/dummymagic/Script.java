@@ -5,6 +5,11 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import ru.footmade.dummymagic.entities.Button;
+import ru.footmade.dummymagic.entities.Scene;
+import ru.footmade.dummymagic.entities.Unit;
+import ru.footmade.dummymagic.entities.UnitAction;
+
 import com.badlogic.gdx.Gdx;
 
 public class Script {
