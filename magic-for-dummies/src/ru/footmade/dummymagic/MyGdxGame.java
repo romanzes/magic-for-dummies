@@ -21,6 +21,7 @@ public class MyGdxGame implements ApplicationListener {
 	public void dispose() {
 		renderer.dispose();
 		soundPlayer.dispose();
+		CommonResources.getInstance().dispose();
 	}
 
 	@Override

@@ -6,9 +6,11 @@ import java.util.List;
 import java.util.Map;
 
 import ru.footmade.dummymagic.entities.Button;
+import ru.footmade.dummymagic.entities.GameInfo;
 import ru.footmade.dummymagic.entities.Scene;
 import ru.footmade.dummymagic.entities.Unit;
 import ru.footmade.dummymagic.entities.UnitAction;
+import ru.footmade.dummymagic.games.MiniGame;
 
 import com.badlogic.gdx.Gdx;
 
@@ -27,6 +29,8 @@ public class Script {
 	public boolean unitsRendered;
 	
 	public Map<String, Unit> units = new HashMap<String, Unit>();
+	
+	public MiniGame game;
 	
 	public Script() {
 		String rawScript = Gdx.files.internal("vn.vn").readString("UTF-8");
@@ -135,6 +139,22 @@ public class Script {
 		prevScene = currentScene;
 		currentScene = index;
 		tick = System.currentTimeMillis();
+		final GameInfo gameDef = getCurrentScene().game;
+		if (gameDef != null) {
+			try {
+				game = (MiniGame) Class.forName(getClass().getPackage().getName() + ".games." + gameDef.name + ".Main").newInstance();
+				game.start(gameDef.argument);
+				game.setGameCallback(new MiniGame.MiniGameCallback() {
+					@Override
+					public void onExit(int result) {
+						game = null;
+						goLabel(gameDef.labels[result]);
+					}
+				});
+			} catch (Exception ex) {
+				ex.printStackTrace();
+			}
+		}
 		backgroundRendered = false;
 		unitsRendered = false;
 		textRendered = false;

@@ -20,6 +20,7 @@ public class Scene {
 	public List<UnitAction> unitActions = new ArrayList<UnitAction>();
 	public String label, jumpLabel;
 	public AudioInfo music, sound, voice;
+	public GameInfo game;
 	
 	public Scene(String raw) {
 		StringBuilder textBuilder = new StringBuilder();
@@ -98,6 +99,14 @@ public class Scene {
 						voice.looped = true;
 					}
 				}
+			}
+		} else if (commandName.equals("game")) {
+			game = new GameInfo();
+			game.name = commandData[1];
+			game.argument = commandData[2];
+			game.labels = new String[commandData.length - 3];
+			for (int i = 3; i < commandData.length; i++) {
+				game.labels[i - 3] = commandData[i];
 			}
 		}
 	}

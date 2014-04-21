@@ -13,8 +13,6 @@ import com.badlogic.gdx.graphics.Texture.TextureFilter;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.NinePatch;
 import com.badlogic.gdx.graphics.g2d.TextureAtlas;
-import com.badlogic.gdx.graphics.g2d.freetype.FreeTypeFontGenerator;
-import com.badlogic.gdx.graphics.g2d.freetype.FreeTypeFontGenerator.FreeTypeFontParameter;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.Container;
@@ -33,15 +31,11 @@ public class Renderer implements Disposable {
 	private static final int FONT_HEIGHT = 60;
 	private static final float CHOICE_WIDTH = 0.7f;
 	
-	private static final String RUSSIAN_CHARS = "àáâãäå¸æçèéêëìíîïğñòóôõö÷øùúûüışÿÀÁÂÃÄÅ¨ÆÇÈÉÊËÌÍÎÏĞÑÒÓÔÕÖ×ØÙÚÛÜİŞß";
-	
 	private Script script;
 
 	private float scrW, scrH;
 	
 	private OrthographicCamera camera;
-	private TextureAtlas atlas;
-	private BitmapFont font;
 	
 	public Stage stage;
 	public Container textFrame;
@@ -61,18 +55,10 @@ public class Renderer implements Disposable {
 		camera.translate(scrW / 2, scrH / 2);
 		camera.update();
 		
-		atlas = new TextureAtlas(Gdx.files.internal("img/pack.atlas"));
-		
-		FreeTypeFontGenerator generator = new FreeTypeFontGenerator(Gdx.files.internal("fnt/mtcorsva.ttf"));
-		FreeTypeFontParameter fontParam = new FreeTypeFontParameter();
-		fontParam.size = FONT_HEIGHT;
-		fontParam.minFilter = TextureFilter.Linear;
-		fontParam.magFilter = TextureFilter.Linear;
-		fontParam.characters = fontParam.characters + RUSSIAN_CHARS;
-		font = generator.generateFont(fontParam);
-		generator.dispose();
-		
 		stage = new Stage(scrW, scrH);
+		
+		CommonResources resources = CommonResources.getInstance();
+		TextureAtlas atlas = resources.getTextureAtlas();
 		
 		backgroundView = new BackgroundView(atlas, script);
 		backgroundView.setSize(scrW, scrH);
@@ -82,6 +68,7 @@ public class Renderer implements Disposable {
 		unitsView.setSize(scrW, scrH);
 		stage.addActor(unitsView);
 		
+		BitmapFont font = resources.getFont(FONT_HEIGHT);
 		text = new ColoredText(font);
 		
 		textFrame = new Container(text);
@@ -145,22 +132,24 @@ public class Renderer implements Disposable {
 	private int oldScene = -1;
 	
 	public void render() {
-		refreshText();
-		refreshChoices();
-		
-		Gdx.gl.glClearColor(1, 1, 1, 1);
-		Gdx.gl.glClear(GL10.GL_COLOR_BUFFER_BIT);
-		
-		stage.act(Gdx.graphics.getDeltaTime());
-        stage.draw();
-        
-        oldScene = script.currentScene;
+		if (script.game != null) {
+			script.game.render();
+		} else {
+			refreshText();
+			refreshChoices();
+			
+			Gdx.gl.glClearColor(1, 1, 1, 1);
+			Gdx.gl.glClear(GL10.GL_COLOR_BUFFER_BIT);
+			
+			stage.act(Gdx.graphics.getDeltaTime());
+	        stage.draw();
+	        
+	        oldScene = script.currentScene;
+		}
 	}
 
 	@Override
 	public void dispose() {
-		atlas.dispose();
-		font.dispose();
 		stage.dispose();
 	}
 }
