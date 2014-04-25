@@ -1,7 +1,6 @@
 package ru.footmade.dummymagic;
 
 import com.badlogic.gdx.ApplicationListener;
-import com.badlogic.gdx.Gdx;
 
 public class MyGdxGame implements ApplicationListener {
 	private Script script;
@@ -12,7 +11,6 @@ public class MyGdxGame implements ApplicationListener {
 	public void create() {
 		script = new Script();
 		renderer = new Renderer(script);
-		Gdx.input.setInputProcessor(renderer.stage);
 		soundPlayer = new AudioPlayer(script);
 		script.start();
 	}

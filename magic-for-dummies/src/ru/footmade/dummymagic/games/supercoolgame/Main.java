@@ -6,27 +6,22 @@ import ru.footmade.dummymagic.games.MiniGame;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.GL20;
-import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
-import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.BitmapFont.HAlignment;
+import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 
 public class Main extends MiniGame {
 	private float scrW, scrH;
-	private CommonResources resources;
 	private BitmapFont font;
 	private SpriteBatch batch;
-	private OrthographicCamera camera;
 
 	@Override
 	public void start(String argument) {
 		scrW = Gdx.graphics.getWidth();
 		scrH = Gdx.graphics.getHeight();
-		camera = new OrthographicCamera(scrW, scrH);
-		camera.translate(scrW / 2, scrH / 2);
-		camera.update();
+		CommonResources resources = CommonResources.getInstance();
 		batch = new SpriteBatch();
-		resources = CommonResources.getInstance();
+		batch.setProjectionMatrix(resources.getCamera().combined);
 		font = resources.getFont(50);
 	}
 
@@ -42,7 +37,6 @@ public class Main extends MiniGame {
 		Gdx.gl.glClearColor(0, 0, 0, 1);
 		Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
 		
-		batch.setProjectionMatrix(camera.combined);
 		batch.begin();
 		
 		String title = "Super Cool Game!";

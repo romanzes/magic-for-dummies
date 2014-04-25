@@ -8,7 +8,6 @@ import ru.footmade.dummymagic.ui.UnitsView;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.GL10;
-import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.Texture.TextureFilter;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.NinePatch;
@@ -35,8 +34,6 @@ public class Renderer implements Disposable {
 
 	private float scrW, scrH;
 	
-	private OrthographicCamera camera;
-	
 	public Stage stage;
 	public Container textFrame;
 	public ColoredText text;
@@ -50,10 +47,6 @@ public class Renderer implements Disposable {
 		
 		scrH = SCREEN_HEIGHT;
 		scrW = Gdx.graphics.getWidth() * scrH / Gdx.graphics.getHeight();
-		
-		camera = new OrthographicCamera(scrW, scrH);
-		camera.translate(scrW / 2, scrH / 2);
-		camera.update();
 		
 		stage = new Stage(scrW, scrH);
 		
@@ -129,12 +122,19 @@ public class Renderer implements Disposable {
 		}
 	}
 	
+	private void refreshInput() {
+		if (script.currentScene != oldScene) {
+			Gdx.input.setInputProcessor(stage);
+		}
+	}
+	
 	private int oldScene = -1;
 	
 	public void render() {
 		if (script.game != null) {
 			script.game.render();
 		} else {
+			refreshInput();
 			refreshText();
 			refreshChoices();
 			
